@@ -3,15 +3,12 @@ class TransferPage {
     selectorsList() {
         return {
             newTransaction: '[data-test="nav-top-new-transaction"]',
-            lastNameField: '#lastName',
-            usernameField: '#username',
-            passwordField: '#password',
-            confirmPasswordField: '#confirmPassword',
-            registerButton: '[data-test="signup-submit"]',
-            genericWrongCredentialAlert: '.MuiFormHelperText-root',
-            totalFields: 5,
-            shortPasswordAlert: '#password-helper-text',
-            differentPasswordAlert: '#confirmPassword-helper-text'
+            userList: '[data-test="user-list-item-GjWovtg2hr"]',
+            userBalance: '[data-test="sidenav-user-balance"]',
+            amountField: '#amount',
+            transactionDescriptionField: '#transaction-create-description-input',
+            submitPaymentButton: '[data-test="transaction-create-submit-payment"]',
+            messageTransferDoneWithSuccess: '.MuiGrid-spacing-xs-3'
         }
     }
 
@@ -21,32 +18,40 @@ class TransferPage {
     }
     
     clickFirstUser() {
-        cy.get('[data-test="user-list-item-GjWovtg2hr"]').click();
+        cy.get(this.selectorsList().userList).click();
     }
 
-    typeValue() {
-        cy.get('[data-test="sidenav-user-balance"]');
-        cy.get('#amount').type()
+    sendMoneyWithSufficientBalance() {
+        cy.get(this.selectorsList().userBalance)
+            .should('be.visible')
+            .invoke('text')
+            .then((balanceValue) => {
+                cy.get(this.selectorsList().amountField).type(balanceValue)
+            });
+        cy.get(this.selectorsList().transactionDescriptionField).type("note")
+        cy.get(this.selectorsList().submitPaymentButton).click()
     }
 
-    accessRegisterPage() {
-        cy.visit('/signup');
+    sendMoneyWithNotSufficientBalance() {
+        cy.get(this.selectorsList().userBalance)
+            .should('be.visible')
+            .invoke('text')
+            .then((balanceValue) => {
+                cy.log('O valor do balance é: ' + balanceValue)
+                cy.get(this.selectorsList().amountField).type("10000")
+            });
+        cy.get(this.selectorsList().transactionDescriptionField).type("note")
+        cy.get(this.selectorsList().submitPaymentButton).click()
     }
 
-    sendFormToRegisterUser() {
-        cy.get(this.selectorsList().registerButton).click();
+    checkIfTransferSuccess() {
+        cy.get(this.selectorsList().messageTransferDoneWithSuccess).should('be.visible').contains('Paid');
     }
 
-    checkInvalidRegisterByEmptyUser() {
-        cy.get(this.selectorsList().genericWrongCredentialAlert).should('have.length', this.selectorsList().totalFields);      
-    }
-
-    checkInvalidRegisterByShortPassword() {
-        cy.get(this.selectorsList().shortPasswordAlert).should('exist');
-    }
-
-    checkDifferentPasswords() {
-        cy.get(this.selectorsList().differentPasswordAlert).should('exist');    
+    checkIfTransferFail() {
+        cy.get(this.selectorsList().messageTransferDoneWithSuccess)
+        .should('be.visible')
+        .should('not.contain', 'Paid');
     }
 }
 

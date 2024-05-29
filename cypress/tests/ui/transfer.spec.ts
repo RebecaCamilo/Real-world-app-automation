@@ -15,17 +15,18 @@ describe('Transaction RWA Tests', () => {
         cy.location('pathname').should('equal', '/'); 
     });
 
-    it.only('Enviar dinheiro com saldo suficiente', () => {
+    it('Enviar dinheiro com saldo suficiente', () => {
         transferPage.accessTransactionPage();
         transferPage.clickFirstUser();
-        // transactionPage.sendMoneyWithSufficientBalance();
-        // transactionPage.checkTransactionSuccess();
+        transferPage.sendMoneyWithSufficientBalance();
+        transferPage.checkIfTransferSuccess();
     });
 
     it('Enviar dinheiro com saldo insuficiente', () => {
-        // transactionPage.accessTransactionPage();
-        // transactionPage.sendMoneyWithInsufficientBalance();
-        // transactionPage.checkTransactionFailure();
+        transferPage.accessTransactionPage();
+        transferPage.clickFirstUser();
+        transferPage.sendMoneyWithNotSufficientBalance();
+        transferPage.checkIfTransferFail();
     });
 
 })
