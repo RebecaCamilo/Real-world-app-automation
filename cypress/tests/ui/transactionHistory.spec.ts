@@ -1,7 +1,9 @@
 import userData from "../../fixtures/users/userData.json"
 import LoginPage from "../../pages/loginPage"
+import TransactionalHistoryPage from "../../pages/transactionalHistoryPage"
 
 const loginPage = new LoginPage();
+const transactionalHistoryPage = new TransactionalHistoryPage();
 
 describe('Transaction History Tests', () => {
 
@@ -14,10 +16,13 @@ describe('Transaction History Tests', () => {
 
     it('Visualizar histórico de transações com sucesso', () => {
         //Deve exibir o histórico de transações de um usuário corretamente
+        
     });
 
     it('Tentar visualizar o histórico de transações sem transações anteriores', () => {
         //Deve exibir uma mensagem indicando que o usuário não possui transações anteriores
+        transactionalHistoryPage.accessMyTransactionsPage();
+        transactionalHistoryPage.checkIfTransferNotExists();        
     });
 
 })
