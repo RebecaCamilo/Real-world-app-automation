@@ -5,7 +5,7 @@ class TransactionalHistoryPage {
             mineTransactionsOption: '[data-test="nav-personal-tab"]', 
             transactionsList: '[data-test="transaction-list"]', 
             createTransactionButton: '[data-test="transaction-list-empty-create-transaction-button"]',
-            filterDateRangeButton: '[data-test="transaction-list-filter-date-range-button"]' 
+            filterDateRangeButton: '[data-test="transaction-list-filter-date-range-button"]'
         }
     }
 
@@ -18,19 +18,27 @@ class TransactionalHistoryPage {
     }
 
     checkIfTransferNotExists() {
-        cy.get(this.selectorsList().createTransactionButton);
-        // cy.window().then((win) => {
-        //     win.addEventListener('transactionsLoaded', () => {
-        //       cy.get(this.selectorsList().noTransactionMessage).should('be.visible').contains('No Transactions'); // nao deveria funcionar
-        //     });
-        //   });          
+        const formattedTodayDate: string = this.getFormattedDateFromToday(0);
+        const formattedTomorrowDate: string = this.getFormattedDateFromToday(1);
+        cy.get(this.selectorsList().filterDateRangeButton).click({force: true});
+        cy.get(`[data-date=${formattedTodayDate}]`).click({force: true});
+        cy.get(`[data-date=${formattedTomorrowDate}]`).click({force: true});
+
+        cy.get(this.selectorsList().createTransactionButton).should('be.visible').should('contain', 'Create A Transaction');
+    }    
+
+    getFormattedDateFromToday(daysFromToday: number): string {
+        const today = new Date();
+        const targetDate = new Date(today);
+        targetDate.setDate(today.getDate() + daysFromToday);
+    
+        const year = targetDate.getFullYear();
+        const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+        const day = String(targetDate.getDate()).padStart(2, '0');
+    
+        return `${year}-${month}-${day}`;
     }
 
-    // checkIfTransferFail() {
-    //     cy.get(this.selectorsList().messageTransferDoneWithSuccess)
-    //     .should('be.visible')
-    //     .should('not.contain', 'Paid');
-    // }
 }
 
 export default TransactionalHistoryPage

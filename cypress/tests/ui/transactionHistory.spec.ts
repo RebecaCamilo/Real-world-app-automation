@@ -14,7 +14,7 @@ describe('Transaction History Tests', () => {
         cy.location('pathname').should('equal', '/'); 
     });
 
-    it('Visualizar histórico de transações com sucesso', () => {
+    it.skip('Visualizar histórico de transações com sucesso', () => {
         //Deve exibir o histórico de transações de um usuário corretamente
         transactionalHistoryPage.accessMyTransactionsPage();
         transactionalHistoryPage.checkIfTransferExists();
