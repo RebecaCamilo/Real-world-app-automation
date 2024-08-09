@@ -24,6 +24,7 @@ describe('Transaction History Tests', () => {
     it('Tentar visualizar o histórico de transações sem transações anteriores', () => {
         //Deve exibir uma mensagem indicando que o usuário não possui transações anteriores
         transactionalHistoryPage.accessMyTransactionsPage();
+        transactionalHistoryPage.selectDateRange();
         transactionalHistoryPage.checkIfTransferNotExists();        
     });
 
