@@ -16,6 +16,8 @@ describe('Transaction History Tests', () => {
 
     it('Visualizar histórico de transações com sucesso', () => {
         //Deve exibir o histórico de transações de um usuário corretamente
+        transactionalHistoryPage.accessMyTransactionsPage();
+        transactionalHistoryPage.checkIfTransferExists();
         
     });
 

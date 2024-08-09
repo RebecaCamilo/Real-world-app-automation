@@ -3,7 +3,9 @@ class TransactionalHistoryPage {
     selectorsList() {
         return {
             mineTransactionsOption: '[data-test="nav-personal-tab"]', 
-            noTransactionMessage: '[data-test="empty-list-header"]'
+            transactionsList: '[data-test="transaction-list"]', 
+            createTransactionButton: '[data-test="transaction-list-empty-create-transaction-button"]',
+            filterDateRangeButton: '[data-test="transaction-list-filter-date-range-button"]' 
         }
     }
 
@@ -11,13 +13,17 @@ class TransactionalHistoryPage {
         cy.get(this.selectorsList().mineTransactionsOption).click();
     }
 
+    checkIfTransferExists() {
+        cy.get(this.selectorsList().transactionsList);
+    }
+
     checkIfTransferNotExists() {
-        cy.window().then((win) => {
-            win.addEventListener('transactionsLoaded', () => {
-              cy.get(this.selectorsList().noTransactionMessage).should('be.visible');
-            });
-          });
-          
+        cy.get(this.selectorsList().createTransactionButton);
+        // cy.window().then((win) => {
+        //     win.addEventListener('transactionsLoaded', () => {
+        //       cy.get(this.selectorsList().noTransactionMessage).should('be.visible').contains('No Transactions'); // nao deveria funcionar
+        //     });
+        //   });          
     }
 
     // checkIfTransferFail() {
