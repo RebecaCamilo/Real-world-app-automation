@@ -18,14 +18,16 @@ class TransactionalHistoryPage {
     }
 
     checkIfTransferNotExists() {
+        cy.get(this.selectorsList().createTransactionButton).should('be.visible').should('contain', 'Create A Transaction');
+    }
+
+    selectDateRange() {
         const formattedTodayDate: string = this.getFormattedDateFromToday(0);
         const formattedTomorrowDate: string = this.getFormattedDateFromToday(1);
         cy.get(this.selectorsList().filterDateRangeButton).click({force: true});
         cy.get(`[data-date=${formattedTodayDate}]`).click({force: true});
         cy.get(`[data-date=${formattedTomorrowDate}]`).click({force: true});
-
-        cy.get(this.selectorsList().createTransactionButton).should('be.visible').should('contain', 'Create A Transaction');
-    }    
+    }
 
     getFormattedDateFromToday(daysFromToday: number): string {
         const today = new Date();
